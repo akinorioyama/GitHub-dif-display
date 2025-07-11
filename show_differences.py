@@ -1,3 +1,21 @@
+"""
+Create html pages to show changes proposed by pull requests
+
+Usage:
+  show_differences.py <output_folder>
+  show_differences.py -h | --help
+
+  <base_folder>: folder where retrieved pull requests are going to be stored
+  <owner>: GitHub Repo owner
+  <repo>: GitHub Repo
+
+Examples:
+  show_differences.py "./gh_output"
+
+Options:
+  -h --help     Show this screen.
+  --version     Show version.
+"""
 import requests
 import json
 import os
@@ -6,6 +24,7 @@ import html
 import time
 import shutil  # For rmtree, if uncommented
 import re  # For parsing patch hunks
+from docopt import docopt
 
 # --- Configuration ---
 GITHUB_TOKEN = os.getenv('GITHUB_TOKEN')
@@ -17,7 +36,9 @@ if not GITHUB_TOKEN:
     print("Example (Windows PowerShell): $env:GITHUB_TOKEN=\"your_token_here\"")
     exit(1)
 
-OUTPUT_BASE_DIR = "gh_local_viewer_output2"  # Root directory for all generated sites
+arguments = docopt(__doc__, version="0.1")
+OUTPUT_BASE_DIR = arguments["<output_folder>"]         # "./gh_output"
+
 API_BASE_URL = "https://api.github.com"
 HEADERS = {
     "Authorization": f"token {GITHUB_TOKEN}",
