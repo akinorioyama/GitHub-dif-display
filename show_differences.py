@@ -167,7 +167,7 @@ class GitHubAPI:
         time.sleep(0.05)
         return None
 
-    def get_pull_requests(self, state='open', per_page=100):
+    def get_pull_requests(self, state='all', per_page=100):
         cache_file = get_cache_path(self.owner, self.repo, 'pulls_meta', state)
         cached_data = load_json_cache(cache_file)
         if cached_data is not None:
@@ -802,7 +802,7 @@ def process_repository(owner, repo):
     fetch_all_repository_items()
 
     print("\nStep 2: Fetching pull requests information...")
-    pull_requests_metadata_list = api.get_pull_requests(state='open')
+    pull_requests_metadata_list = api.get_pull_requests(state='all')
     all_pr_details_with_files = {}
     if pull_requests_metadata_list:
         print(f"  Found {len(pull_requests_metadata_list)} open PRs. Fetching file details for each...")
